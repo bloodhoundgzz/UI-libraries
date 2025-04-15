@@ -283,6 +283,7 @@ lib.init = function(title, accent, togglekey)
 		end
 	end)
 
+
 	window.createTab = function(title, image)
 		lib.totaltabs = lib.totaltabs + 1
 		local tab = {}
@@ -1340,3 +1341,29 @@ lib.init = function(title, accent, togglekey)
 
 	return window
 end
+
+local Window = lib.init("Primordial | William", Color3.fromRGB(155, 155, 155), Enum.KeyCode.Insert)
+
+local Tab = Window.createTab("Tab", 4483362458)
+
+local Section = Tab.createSection("Section")
+
+local Toggle = Section.createToggle("Toggle", false, "MaybeToggleIDK", function(state)
+   print(state)
+end)
+
+local Slider = Section.createSlider("Slider", 25, 0, 50, "", function(value)
+   print(value)
+end)
+
+local Colorpicker = Section.createColorpicker("Colorpicker", Color3.fromRGB(155, 155, 155), 0,"Colorpicker", function(color)
+   print(color)
+end)
+
+local Dropdown = Section.createDropdown("Dropdown", {"Head", "Torso", "Random"}, function(value)
+   print(value)
+end)
+
+local Buttom = Section.createButton("Buttom", function()
+print("click!") 
+end)
