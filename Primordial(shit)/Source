@@ -25,7 +25,6 @@ lib.init = function(title, accent, togglekey)
 	local uiTabButtonImage_2 = Instance.new("ImageLabel")
 	local Mouse = game.Players.LocalPlayer:GetMouse()
 
-	-- [ Library Variables ] --
 	lib.accentItems = {}
 	lib.titlelabel = uiNameLabel
 	lib.title = title or "primordial"
@@ -182,7 +181,6 @@ lib.init = function(title, accent, togglekey)
 		end
 	end)
 
-	-- [ Library Functions ] --
 	lib.setAccent = function(color3)
 		if color3 ~= nil and color3.R ~= nil and color3.G ~= nil and color3.B ~= nil then
 			lib.accent = color3
@@ -284,8 +282,6 @@ lib.init = function(title, accent, togglekey)
 			lib.closing = false
 		end
 	end)
-
-	-- [ Tabs ] --
 
 	window.createTab = function(title, image)
 		lib.totaltabs = lib.totaltabs + 1
@@ -792,7 +788,7 @@ lib.init = function(title, accent, togglekey)
 				UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))}
 				UIGradient_2.Parent = uiGradientSlider
 
-				local transparencyImage = Instance.new("ImageLabel") -- UPDATE\
+				local transparencyImage = Instance.new("ImageLabel")
 				local uiCorner = Instance.new("UICorner",transparencyImage); uiCorner.CornerRadius = UDim.new(0,3)
 
 				transparencyImage.Name = "transparencyImage"
