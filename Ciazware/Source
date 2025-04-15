@@ -1,28 +1,30 @@
+-- credits due: bracket lib - keybind & tooltip function, cripware - slider math, xaxaxaxaxaxaxaxaxa making the ui
+
 local library, patches = {
     version = "1.0",
     configuration = {
         frames = {
-            MainBackFrameColor = Color3.fromRGB(138, 138, 138),
-            BorderColor = Color3.fromRGB(50, 50, 50),
-            InlineBorderColor = Color3.fromRGB(10, 10, 10),
+            MainBackFrameColor = Color3.fromRGB(138, 138, 138), -- the very back border's color
+            BorderColor = Color3.fromRGB(50, 50, 50), -- the outline border color of every element (element = toggle, textbox, etc)
+            InlineBorderColor = Color3.fromRGB(10, 10, 10), -- the inline border color of every frame in the ui
         },
         
         elements = {
-            BorderColor = Color3.fromRGB(50, 50, 50),
-            InlineBorderColor = Color3.fromRGB(10, 10, 10),
+            BorderColor = Color3.fromRGB(50, 50, 50), -- the outline border color of every element (element = toggle, textbox, etc)
+            InlineBorderColor = Color3.fromRGB(10, 10, 10), -- the inline border color of every element (element = toggle, textbox, etc)
         },
     
         text = {
-            Color = Color3.fromRGB(255, 255, 255),
-            Font = "Code",
+            Color = Color3.fromRGB(255, 255, 255), -- the color of the everything in the ui that has the TextColor3 property
+            Font = "Code", -- the font of everything in the ui that has the Font property
         },
     
         miscellaneous = {
-            BackgroundGlowColor = Color3.fromRGB(255, 255, 255),
-            TabHighlightColor = Color3.fromRGB(30, 30, 30),
+            BackgroundGlowColor = Color3.fromRGB(255, 255, 255), -- the color of the back ground glow of the ui 
+            TabHighlightColor = Color3.fromRGB(30, 30, 30), -- The BackGroundColor3 of tab and sub-tabs/sections when you click them
             
-            DisplayFpsAndPing = true,
-            UIToggleKey = Enum.KeyCode.RightAlt,
+            DisplayFpsAndPing = true, -- displays your fps and ping in the top right corner of the ui 
+            UIToggleKey = Enum.KeyCode.RightAlt, -- the key to toggle the ui's Visible property on/true and off/false
         },
     },
 }, {};
@@ -46,6 +48,7 @@ local TextColor, TextFont = text.Color, text.Font;
 local miscellaneous = configuration.miscellaneous;
 local BackgroundGlowColor, TabHighlightColor, DisplayFpsAndPing, UIToggleKey = miscellaneous.BackgroundGlowColor, miscellaneous.TabHighlightColor, miscellaneous.DisplayFpsAndPing, miscellaneous.UIToggleKey;
 
+-- init 
 local IsLoaded, Loaded, GetService = game.IsLoaded, game.Loaded, game.GetService;
 if not IsLoaded(game) then 
     Loaded.Wait(Loaded)
@@ -75,7 +78,7 @@ local NewInstance, Color3FromRGB, UDim2, UDim = Instance.new, Color3.fromRGB, UD
 local Connect, Camera, Mouse = Loaded.Connect, workspace.CurrentCamera, Service.Players.LocalPlayer.GetMouse(Service.Players.LocalPlayer);
 local GetDescendants, GetChildren, IsA = game.GetDescendants, game.GetChildren, game.IsA;
 
-local PropertiesTable = {["TextButton"] = "BackgroundColor3", ["Frame"] = "BackgroundTransparency", ["UIStroke"] = "Transparency"};
+local PropertiesTable = {["TextButton"] = "BackgroundColor3", ["Frame"] = "BackgroundTransparency", ["UIStroke"] = "Transparency"}; --{["Frame"] = "BackgroundTransparency", ["TextLabel"] = "TextTransparency", ["UIStroke"] = "Transparency"};
 local BlacklistedKeyNames = {"W", "A", "S", "D", "Slash", "Tab", "Backspace", "Escape", "Space", "Delete", "Unknown", "Backquote"};
 
 local protect_gui = function(Gui, Parent)
@@ -87,8 +90,9 @@ local protect_gui = function(Gui, Parent)
     else
         Gui.Parent = Parent
     end
-end
+end -- thanks regularid
 
+-- script functions
 function patches.FixTextSize(Object, FixSize)
     assert((Object or typeof(Object) == "Instance"));
     assert((FixSize or type(FixSize) == "number"));
@@ -266,7 +270,7 @@ function library.new(Name)
         FpsAmount = (1 / Step);
     end)
     
-    resume(create(function()
+    resume(create(function() -- put it on a new thread
         while task.wait(1) do 
             FpsAndPingLabel.Text = format("fps - %d, ping - %d", FpsAmount, tonumber(string.split(Service.Stats.Network.ServerStatsItem["Data Ping"].GetValueString(Service.Stats.Network.ServerStatsItem["Data Ping"]), ".")[1]));
             patches.FixTextSize(FpsAndPingLabel, -4)
@@ -493,12 +497,12 @@ function library.new(Name)
                     SectionTabButton.BackgroundColor3 = TabHighlightColor
                     
                     for Index, Object in next, GetChildren(SubSectionsFrame) do 
-                        Object.Visible = (find(Object.Name, Name) and true or false)
+                        Object.Visible = (find(Object.Name, --[[split(Object.Name, "_")[2],]] Name) and true or false)
                     end
                 end; Connect(SectionTabButton.MouseButton1Click, OnSectionTabButtonClick);
                 
                 local SubSection = NewInstance("Frame")
-                SubSection.Name = Name
+                SubSection.Name = Name--format("SubSection_%s", TabButton.Name)
                 SubSection.BackgroundColor3 = Color3FromRGB(20, 20, 20)
                 SubSection.BorderColor3 = FrameBorderColor
                 SubSection.BorderSizePixel = 2
@@ -1092,3 +1096,30 @@ library.configuration = {
        UIToggleKey = Enum.KeyCode.RightAlt,
    },
 };
+
+local UI = library.new("CiazWare **UI Library(fixed by William)**");
+local LEGIT = UI.AddTab("Legit")
+
+local UI_SECTION = Legit.AddSection();
+
+local UI_SUBSECTION = UI_SECTION.AddSubSection("Test SUBSECTION");
+local UI_TOGGLE = UI_SUBSECTION.AddToggle("toggle", function(state)
+   print(state)
+end, "Left")
+local UI_TEXTBOX = UI_SUBSECTION.AddTextBox("textbox", function(state)
+   print(state)    
+end, "Left")
+local UI_DROPDOWN = UI_SUBSECTION.AddDropdown("dropdown", {"1", "2", "3", "4"}, function(state)             
+    print(state)
+end, "Left" )
+local UI_SLIDER = UI_SUBSECTION.AddSlider("slider", function(val)
+    print("Slider set to:", val)
+end, "Left", {
+    Minimum = 0,
+    Maximum = 100,
+    Default = 50
+})
+local UI_KEYBIND = UI_SUBSECTION.AddKeybind("keybind", function(state)
+   print(state)
+end, "Left")
+local UI_TOGGLE_TOOLTIP = UI_TOGGLE.AddToolTip("test!")
