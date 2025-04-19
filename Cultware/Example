@@ -1,0 +1,52 @@
+--Services--
+local userInputService = game:GetService("UserInputService")
+local runService = game:GetService("RunService")
+local players = game:GetService("Players")
+local localPlayer = players.LocalPlayer
+local camera = workspace.CurrentCamera
+local mouse = localPlayer:GetMouse()
+
+--Library--
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodhoundgzz/UI-libraries/refs/heads/main/Cultware/Source"))()
+    WindowYSize=545
+    WindowTheme=Color3.fromRGB(185, 0, 191)
+    Window=Library:Window("Cultware.cc | William", WindowTheme, WindowYSize)
+	  Window:Label("1.3.3.7", Color3.fromRGB(185, 0, 191))
+
+--Tab--
+Tab=Window:Tab("Tab")
+    
+--Section-- 
+Section=Tab:Section("Section")
+
+--Toggle--
+Section:Toggle("Toggle", function(Toggle)
+ print(Toggle)
+end)
+
+--Textbox--
+Section:Textbox("Textbox", function(text)
+    if string ~= '' then
+ print(text)
+    end
+end)
+
+--Dropdown--
+Section:Dropdown("Dropdown", {"1", "2", "3"}, function(drop)
+    print(drop)
+end)    
+
+--Slider
+Section:Slider("Slider", 50, 0, function(value)
+    print(value)
+end)
+
+--Color--
+Section:Color("Color Pick", function(color)
+  print(color)
+end)
+
+--Keybind--
+Section:Keybind("Keybind", function(key)
+    print(key)
+end)
