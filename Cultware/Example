@@ -21,13 +21,18 @@ Section=Tab:Section("Section")
 
 --Toggle--
 Section:Toggle("Toggle", function(Toggle)
- print(Toggle)
+    print(Toggle)
+end)
+
+--Button--
+Section:Button("Button", function()
+    print("click")
 end)
 
 --Textbox--
 Section:Textbox("Textbox", function(text)
     if string ~= '' then
- print(text)
+      print(text)
     end
 end)
 
@@ -43,10 +48,15 @@ end)
 
 --Color--
 Section:Color("Color Pick", function(color)
-  print(color)
+    print(color)
 end)
 
 --Keybind--
 Section:Keybind("Keybind", function(key)
     print(key)
+end)
+
+--Toggle+Slider--
+Section:ToggleSlider("Toggle+Slider", 50, 0, function(value)
+    print(value)
 end)
