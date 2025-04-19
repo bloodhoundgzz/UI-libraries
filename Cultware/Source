@@ -1,8 +1,9 @@
 --The UI has been lost for a long time, but I have it))) (William)
+--I also recoded it a bit (quite a bit)
 
 local Library = {}
 
-function Library:Window(Name, Color, SizeY)
+function Library:Window(Name, Color, SizeX, SizeY)
     local CoreGui = game:GetService("CoreGui")
     local UserInput = game:GetService("UserInputService")
     local RunService = game:GetService("RunService")
@@ -47,13 +48,13 @@ function Library:Window(Name, Color, SizeY)
     Main.BackgroundColor3 = Color3.new(0.0509804, 0.0509804, 0.0509804)
     Main.BorderColor3 = Color3.new(0, 0, 0)
     Main.Position = UDim2.new(-0.001, 0, 0.023466019, 0)
-    Main.Size = UDim2.new(0, 513, 0, SizeY)
+    Main.Size = UDim2.new(0, SizeX, 0, SizeY)
 
     Frame.Parent = Main
     Frame.BackgroundColor3 = Color3.new(0.0862745, 0.0862745, 0.0862745)
     Frame.BorderColor3 = Color3.new(0, 0, 0)
     Frame.Position = UDim2.new(0.0137524558, 0, 0.0470383018, 0)
-    Frame.Size = UDim2.new(0, 499, 0, Main.Size.Y.Offset - 38)
+    Frame.Size = UDim2.new(0, Main.Size.X.Offset - 38, 0, Main.Size.Y.Offset - 38)
 
     Heading.Name = "Heading"
     Heading.Parent = Main
