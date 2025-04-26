@@ -1,0 +1,147 @@
+local UserInterface = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodhoundgzz/UI-libraries/refs/heads/main/Drax/Source"))()
+local Interface = UserInterface:Create{title = 'drax<font color="rgb(168, 157, 159)">.lib</font>',}
+
+local tab1 = Interface:Tab( "Example Tab" )
+local tab2 = Interface:Tab( "Config" )
+                            
+local secton1 = tab1:Section("Example Section", "left")
+local secton2 = tab1:Section("Example Section 2", "right")
+
+secton1:Dropdown({ title = "Example Dropdown", values = {"example1", "example2"}, default = "example1", multi = false, callback = function (value)
+    print("Selected" .. value)
+end })
+secton1:Dropdown({ title = "Example Multi-Dropdown", values = {"example1", "example2", "example3", "example4", "example5", "example6", "example7", "example8", "example9", "example10"}, default = "example1", multi = true, callback = function (value)
+    print("Selected" .. value)
+end })
+local MainKeybind = secton1:Toggle({ title = "Toggled", default = false, callback = function (bool)
+    print(tostring(bool))
+end })
+MainKeybind:Keybind({ keybindlist = true, keybindname = "MainKeyBind:", callback = function (bool)
+    print(tostring(bool))
+end })
+
+secton2:Slider({ title = "Example Slider", suffix = "%", min = 0, max = 100, default = 0,float = 0.1, mintext = "unlimited", callback = function (value)
+    print(value)
+end })
+
+secton2:TextBox({ title = "Example Box", default = "", placeholder = "Example Text", ClearTextOnFocus = false, callback = function (value)
+    print(value)
+end })
+
+local asdba = secton2:Toggle({ title = "Color Picker", default = false, callback = function (bool)
+    print(bool)
+end })
+asdba:Colorpicker({ default = Color3.fromRGB(255, 255, 255), transparency = 1, callback = function (value, transparency)
+    print(tostring(value))
+    print(tostring(transparency))
+end })
+secton2:Button({ title = "Example Button", callback = function ()
+    print("button clicked")
+end })
+
+local config = {
+    path = "drax/configs/da_hood/",
+    file = "",
+    config_name = ""
+}
+function config:get_list()
+    local config_list = {}
+
+    if #listfiles("drax/configs/da_hood") > 0 then
+        for i, v in next, listfiles("drax/configs/da_hood") do
+            local ext = '.'..v:split('.')[#v:split('.')];
+            if ext == '.txt' then
+                table.insert(config_list, v:split('\\')[#v:split('\\')]:sub(1,-#ext-1))
+            end
+        end
+    else
+        config_list = {}
+    end
+
+    return config_list
+end
+local loading_config = false
+local profiles = tab2:Section("Example Config Section", "left")
+                            
+profiles:TextBox({ title = "NO TITLE", default = "", placeholder = "config name", ClearTextOnFocus = true, callback = function (value)
+    config.config_name = value
+end })
+
+local configs_list, funcs = profiles:Dropdown({ title = "configs", values = config:get_list(), default = "--", multi = false, callback = function (value)
+    config.file = value
+end })
+
+profiles:Button({ title = "load config", callback = function ()
+    if config.file == nil then return end
+    if not isfile(config.path .. config.file .. ".txt") then return end
+
+    loading_config = true
+    local config_to_load = readfile(config.path .. config.file .. ".txt")
+    UserInterface:LoadConfig(config_to_load)
+    funcs:Refresh(config:get_list())
+    loading_config = false
+end })
+
+profiles:Button({ title = "save config", callback = function ()
+    if config.config_name ~= "" then
+        writefile(config.path .. config.config_name .. ".txt", UserInterface:GetConfig())
+        funcs:Refresh(config:get_list())
+    end
+end })
+
+profiles:Button({ title = "delete config", callback = function ()
+    if config.file ~= nil then
+        local config_to_delete = config.path .. config.file .. ".txt"
+        delfile(config_to_delete)
+        funcs:Refresh(config:get_list())
+    end
+end })
+
+profiles:Button({ title = "refresh list", callback = function ()
+    funcs:Refresh(config:get_list())
+end })
+
+
+
+local theme_section = tab2:Section("theme", "right")
+                            
+getgenv().theme = {
+    accent = Color3.fromRGB(168, 157, 159),
+    scroll = Color3.fromRGB(168, 157, 159)
+}
+
+local old_theme = table.clone(getgenv().theme)
+local theme_objects = {}
+
+theme_objects["accent"] = theme_section:Colorpicker({ title = "accent", default = Color3.fromRGB(168, 157, 159), transparency = 1, callback = function (value, transparency)
+    theme.accent = value
+    theme_event:Fire()
+end })
+
+theme_objects["scroll"] = theme_section:Colorpicker({ title = "scrollbar", default = Color3.fromRGB(168, 157, 159), transparency = 1, callback = function (value, transparency)
+    theme.scroll = value
+    theme_event:Fire()
+end })
+
+theme_section:Button({ title = "reset to default", callback = function ()
+    for i1, v1 in next, old_theme do
+        for i2, v2 in next, theme_objects do
+            if not i1 == i2 then continue end
+            v2:Set(v1)
+        end
+    end
+end })
+
+local menu_misc = tab2:Section("menu", "right")
+
+menu_misc:Keybind({title = "menu keybind", keybindlist = false, keybindname = "menu:", key = "RightAlt", callback = function (bool)
+    if not loading_config then
+        UI["2"].Visible = not UI["2"].Visible
+    end
+end })
+
+menu_misc:Toggle({ title = "keybind ui", default = true, callback = function (bool)
+    UI.KeybindListo.Visible = bool
+end })
+
+UI["2"].Visible = true
